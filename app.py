@@ -45,7 +45,7 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 def get_data(symbol, datesettl='48HS'):
 	data = requests.get(
 		'https://open.bymadata.com.ar/vanoms-be-core/rest/api/bymadata/free/chart/historical-series/history?symbol'
-		f'={symbol}%20{datesettl}&resolution=D&from=1638991971&to=1792860831')
+		f'={symbol}%20{datesettl}&resolution=D&from=1638991971&to=1792860831', verify=False)
 	data = pd.DataFrame(data.json())[['t', 'o', 'h', 'l', 'c', 'v']]
 	data['t'] = data['t'].astype(float) * 1000
 	data['v'] = data['v'].astype(float) #  /10000
@@ -53,6 +53,6 @@ def get_data(symbol, datesettl='48HS'):
 	volume = data[['t', 'v']].values.tolist()
 	return ohlc, volume
 
-
-#if __name__ == "__main__":
-#app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
+#
+# if __name__ == "__main__":
+# 	app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
