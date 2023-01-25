@@ -19,6 +19,7 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 	if request.method == "POST":
 		tickers = request.form['ticker']
 		symbols = tickers.split(';')  # ['GD30', 'GD30D']
+		symbols = symbols[:5]  # hasta 5 tickers
 		series = {}
 		title = {}
 		container = {}
