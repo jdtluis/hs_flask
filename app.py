@@ -53,5 +53,6 @@ def get_data(symbol, datesettl='48HS'):
 	volume = data[['t', 'v']].values.tolist()
 	return ohlc, volume
 
-if __name__ == "__main__":
-	# app.run(debug = False, passthrough_errors=True) #, host='0.0.0.0', port=8080
+
+#if __name__ == "__main__":
+app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
