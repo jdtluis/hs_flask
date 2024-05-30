@@ -47,10 +47,12 @@ html {
 body {
     background:url("background.jpg") no-repeat scroll top center transparent;
 }
+
 .actions, .chart {
     margin: 15px auto;
     width: 100%;
 }
+
 button {
     background: none repeat scroll 0 0 #E3E3E3;
     border: 1px solid #BBBBBB;

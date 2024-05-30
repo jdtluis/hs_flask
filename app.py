@@ -17,14 +17,13 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 		return render_template('/ticker_block.html', chartID='', series=[], title='', container=[])
 
 	if request.method == "POST":
-		tickers = request.form['ticker']
-		symbols = tickers.split(';')  # ['GD30', 'GD30D']
-		symbols = symbols[:5]  # hasta 5 tickers
+		symbols = request.form['ticker'].split(';')[:5]  # hasta 5 tickers
+		settl = request.form.get('settl')
 		series = {}
 		title = {}
 		container = {}
 		for s in symbols:
-			ohlc, volume = get_data(s) # , 'CDO'
+			ohlc, volume = get_data(s, settl)  # , 'CDO'
 			series[s] = [{
 				"type": 'candlestick',
 				"name": s,
@@ -34,9 +33,9 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 				"name": 'Volumen',
 				"data": volume,
 				"yAxis": 1}]
-	#			"dataGrouping": {
-	#				"units": [['week', [1]], ['month', [1, 2, 3, 4, 6]]]}}]
-			title[s] = {"text": s}
+				#"dataGrouping": {
+					#"units": [['week', [1]], ['month', [1, 2, 3, 4, 6]]]}}]
+			title[s] = {"text": ' - '.join([s, settl])}
 			container[s] = s
 	#xAxis = {"categories": ['xAxis Data1', 'xAxis Data2', 'xAxis Data3']}
 	#yAxis = {"title": {"text": 'yAxis Label'}}
@@ -49,7 +48,7 @@ def get_data(symbol, datesettl='48HS'):
 		f'={symbol}%20{datesettl}&resolution=D&from=1638991971&to=1792860831', verify=False)
 	data = pd.DataFrame(data.json())[['t', 'o', 'h', 'l', 'c', 'v']]
 	data['t'] = data['t'].astype(float) * 1000
-	data['v'] = data['v'].astype(float) #  /10000
+	data['v'] = data['v'].astype(float)  # /10000
 	ohlc = data[['t', 'o', 'h', 'l', 'c']].values.tolist()
 	volume = data[['t', 'v']].values.tolist()
 	return ohlc, volume
